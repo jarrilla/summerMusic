@@ -1,0 +1,10 @@
+{
+  "name": "summerMusic",
+  "version": "1.0.0",
+  "description": "summer spotify queuer",
+  "main": "app/dist/server.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

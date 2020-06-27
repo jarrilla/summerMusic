@@ -1,7 +1,11 @@
-const SPOTIFY_API_KEY='af76ea43509b4045bff0350208d131fc';
-const SPOTIFY_API_SECRET='4f54d57e55d74fa98fbb1d0135e7b593';
-const REDIRECT_URL='http://localhost:3000/callback';
-const SPOTIFY_REFRESH_TOKEN='AQAfkP2D9YEefgS7tAOwkbG2TJX_HxU5ffJqA9dWtKS6zKDkdb1zeKeNHslljfvqVsGwBdMI6_TumDi6nni7DU9k_7LEB38y3Ka4qUW0GONIRrUOJtC8JPIkXR2Hb9ldYDc';
+require('dotenv').config();
+
+const {
+  SPOTIFY_API_KEY,
+  SPOTIFY_API_SECRET,
+  REDIRECT_URL,
+  SPOTIFY_REFRESH_TOKEN
+} = process.env;
 
 import express from "express";
 import axios from "axios";
@@ -19,12 +23,12 @@ app.get('/', (_req, res) => {
 });
 
 app.get('/login', (_req, res) => {
-  const scopes = 'user-read-private user-read-email';
+  const scopes = 'playlist-modify-public';
   res.redirect(
     'https://accounts.spotify.com/authorize?response_type=code&client_id='
     + SPOTIFY_API_KEY
     + '&scope=' + encodeURIComponent(scopes)
-    + '&redirect_uri=' + encodeURIComponent(REDIRECT_URL)
+    + '&redirect_uri=' + encodeURIComponent(REDIRECT_URL!)
   );
 });
 
@@ -33,7 +37,7 @@ app.get('/callback', async (req, res) => {
   const url = 'https://accounts.spotify.com/api/token'
     + '?grant_type=authorization_code'
     + '&code=' + code
-    + '&redirect_uri=' + encodeURIComponent(REDIRECT_URL)
+    + '&redirect_uri=' + encodeURIComponent(REDIRECT_URL!)
     + '&client_id=' + SPOTIFY_API_KEY
     + '&client_secret=' + SPOTIFY_API_SECRET;
 
@@ -93,7 +97,7 @@ async function refreshAccessToken() {
   
   const url = 'https://accounts.spotify.com/api/token'
     + '?grant_type=refresh_token'
-    + '&refresh_token=' + encodeURIComponent(SPOTIFY_REFRESH_TOKEN)
+    + '&refresh_token=' + encodeURIComponent(SPOTIFY_REFRESH_TOKEN!)
     + '&client_id=' + SPOTIFY_API_KEY
     + '&client_secret=' + SPOTIFY_API_SECRET;
 
